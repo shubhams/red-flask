@@ -288,4 +288,7 @@ ENV/
 # mkdocs documentation
 /site
 
+#secrets
+.flask-app/creds/
+
 # End of https://www.gitignore.io/api/macos,python,pycharm+all
