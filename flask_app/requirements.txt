@@ -1,0 +1,22 @@
+aniso8601==1.2.1
+click==6.7
+Flask==0.12.2
+-e git+https://github.com/shubham192/red-flask@1f2e964cff39d4d4acd29958ff1482e37c96d979#egg=flask_app&subdirectory=flask_app
+Flask-RESTful==0.3.6
+flask-restplus==0.10.1
+functools32==3.2.3.post2
+google-api-python-client==1.6.2
+httplib2==0.10.3
+itsdangerous==0.24
+Jinja2==2.9.6
+jsonschema==2.6.0
+MarkupSafe==1.0
+oauth2client==4.1.2
+pyasn1==0.3.2
+pyasn1-modules==0.0.11
+python-dateutil==2.6.1
+pytz==2017.2
+rsa==3.4.2
+six==1.10.0
+uritemplate==3.0.0
+Werkzeug==0.12.2
