@@ -1,3 +1,5 @@
+import os
+from flask import json
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from oauth2client.tools import argparser
@@ -6,21 +8,24 @@ from oauth2client.tools import argparser
 # tab of
 #   https://cloud.google.com/console
 # Please ensure that you have enabled the YouTube Data API for your project.
-DEVELOPER_KEY = "REPLACE_ME"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
 
 def youtube_search(options):
+    dir_path = os.path.dirname(os.path.dirname(__file__))
+    file_path = os.path.join(dir_path, 'creds/developer_key.json')
+
+    DEVELOPER_KEY = json.loads(open(file_path).read()).get('api_key')
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
                     developerKey=DEVELOPER_KEY)
 
     # Call the search.list method to retrieve results matching the specified
     # query term.
     search_response = youtube.search().list(
-        q=options.q,
+        q=options.get('q'),
         part="id,snippet",
-        maxResults=options.max_results
+        maxResults=options.get('max_results')
     ).execute()
 
     videos = []
@@ -43,7 +48,6 @@ def youtube_search(options):
     print "Videos:\n", "\n".join(videos), "\n"
     print "Channels:\n", "\n".join(channels), "\n"
     print "Playlists:\n", "\n".join(playlists), "\n"
-
 
 # if __name__ == "__main__":
 #     argparser.add_argument("--q", help="Search term", default="Google")
