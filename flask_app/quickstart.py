@@ -59,4 +59,3 @@ def channels_list_by_username(service, **kwargs):
         results['items'][0]['statistics']['viewCount']))
 
 channels_list_by_username(service, part='snippet,contentDetails,statistics', forUsername='GoogleDevelopers')
-quickstart.py

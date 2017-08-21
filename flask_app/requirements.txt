@@ -1,7 +1,6 @@
 aniso8601==1.2.1
 click==6.7
 Flask==0.12.2
--e git+https://github.com/shubham192/red-flask@1f2e964cff39d4d4acd29958ff1482e37c96d979#egg=flask_app&subdirectory=flask_app
 Flask-RESTful==0.3.6
 flask-restplus==0.10.1
 functools32==3.2.3.post2
