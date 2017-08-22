@@ -40,7 +40,7 @@ def search_by_keyword(options):
             videos_list_ids.append(search_result["id"]["videoId"])
 
     print "Video IDs retreived:\n", "\n".join(videos_list_ids), "\n"
-    get_vides_by_ids(query, video_ids=",".join(videos_list_ids))
+    return get_vides_by_ids(query, video_ids=",".join(videos_list_ids))
 
 
 def get_vides_by_ids(query, video_ids):
@@ -49,7 +49,7 @@ def get_vides_by_ids(query, video_ids):
         part='snippet, contentDetails, status, statistics, topicDetails, liveStreamingDetails'
     ).execute()
 
-    insert_into_es(query, video_response)
+    return insert_into_es(query, video_response)
 
 
 def insert_into_es(query, video_response):
@@ -65,3 +65,4 @@ def insert_into_es(query, video_response):
         es.index(index='video', doc_type='meta', body=(
             video_meta
         ))
+    return len(video_response.get("items", []))
