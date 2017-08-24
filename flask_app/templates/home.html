@@ -1,0 +1,145 @@
+<html>
+  <head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class='container information'>
+      <div class="ui grid">
+        <div class="three wide column">
+        </div>
+        <div class="ten wide column">
+          <div class=" ui segment" style="text-align: center; margin-top: 3%;">
+            <div class="ui labeled input" style="padding: 3%; width: 95%">
+              <div class="ui label">
+                http://
+              </div>
+              <input id='url' type="text" placeholder="URL of the video">
+              <button class="ui button search_url"><i class="icon Search"></i></button>
+            </div>
+          </div>
+
+          <div class=" ui segment processing_div" style="margin-top: 3%; padding: 3%; display: none;">
+            <div class="ui icon message">
+              <i class="notched circle loading icon"></i>
+              <div class="content">
+                <div class="header">
+                  Just one second
+                </div>
+                <p>We're fetching that content for you.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class=" ui segment error_div" style="margin-top: 3%; padding: 3%; display: none;">
+            <div class="ui negative message">
+              <div class="header">
+                We're sorry
+              </div>
+              <p>Currently we're unable to process this url</p>
+            </div>
+          </div>
+
+          <div class=" ui segment result_div" style="margin-top: 3%; display: none;">
+            <div class="ui cards" style="padding-top: 3%; padding-bottom: 3%;">
+              <div class="card" style="width: 45%; margin-right: 3%; margin-left: 3%">
+                <div class="content">
+                  <div class="header">Parameters Used :</div>
+                  <br>
+                  <div class="description">
+                    <table class="ui celled striped table">
+                      <tbody>
+                        <tr>
+                          <td class="collapsing" >
+                            # Views
+                          </td>
+                          <td id="num_views">100000000</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            # Comment
+                          </td>
+                          <td id="num_comments">100000000</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            # Dislikes
+                          </td>
+                          <td id="num_dislikes">100000000</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            # Favourite
+                          </td>
+                          <td id="num_favourites">100000000</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            # Channel Videos
+                          </td>
+                          <td id="num_channel_videos">100000000</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            # Channel Subscribers
+                          </td>
+                          <td id="num_channel_subscribers">100000000</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="width: 45%;">
+                <div class="content">
+                  <div class="header">Output</div>
+                  <br><br>
+                  <div class="description">
+                    <table class="ui celled striped table">
+                      <tbody>
+                        <tr>
+                          <td class="collapsing" style="text-align: center;">
+                            <div class="ui statistic">
+                              <div class="value" id="actual_likes">
+                                5,550
+                              </div>
+                              <div class="label">
+                                Actual Likes
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="collapsing" style="text-align: center;">
+                            <div class="ui statistic">
+                              <div class="value" id="predicted_likes">
+                                5,550
+                              </div>
+                              <div class="label">
+                                Predicted Likes
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="three wide column">
+        </div>
+      </div>
+    </div>
+
+    <script src='../static/javascripts/home.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+
+  </body>
+</html>

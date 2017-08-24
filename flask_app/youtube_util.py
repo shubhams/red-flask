@@ -71,7 +71,7 @@ def insert_into_es(es, query, video_response):
         return 'Error inserting records into ES'
 
 
-def get_channel_info(es, channel_id):
+def get_channel_info(channel_id):
     channel_response = youtube.channels().list(
         part='statistics',
         id=channel_id

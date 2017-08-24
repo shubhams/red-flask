@@ -8,16 +8,16 @@ def init():
 
     # with open(es_cred_file) as cred_file:
     #     es_creds = json.load(cred_file)
-    # es = Elasticsearch(http_auth=(os.environ['ES_USER'], os.environ['ES_SECRET']))
-    es = Elasticsearch(
-        ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
-        # http_auth=(es_creds.get('user'), es_creds.get('secret')),
-        http_auth=(os.environ['ES_USER'], os.environ['ES_SECRET']),
-        port=9243,
-        use_ssl=True,
-        verify_certs=True,
-        ca_certs=certifi.where(),
-    )
+    es = Elasticsearch(http_auth=(os.environ['ES_USER'], os.environ['ES_SECRET']))
+    # es = Elasticsearch(
+    #     ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
+    #     # http_auth=(es_creds.get('user'), es_creds.get('secret')),
+    #     http_auth=(os.environ['ES_USER'], os.environ['ES_SECRET']),
+    #     port=9243,
+    #     use_ssl=True,
+    #     verify_certs=True,
+    #     ca_certs=certifi.where(),
+    # )
     print "Connected", es.info()
     return es
 
