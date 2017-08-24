@@ -8,7 +8,7 @@ This repository contains the source code for the Flask Application that fetches 
  
  ![architecture-image](./Architecture.png)
 
-#### Data Collection and Processing:
+### Data Collection and Processing:
 Data was collected in the following steps:
 
 *  `/search` API takes `query` and `max_result` in request and fetches the list of matching video IDs from the [YouTube Search API](https://developers.google.com/youtube/v3/docs/search)
@@ -170,7 +170,7 @@ A typical Elasticsearch video meta document looked like:
   ]
 }
 ```
-#### Data Visualisation:
+### Data Visualisation:
 For visualisation, I turned to [Kibana](https://www.elastic.co/products/kibana) because of its seamless integration with Elasticsearch. It was my one stop shop for data exploration and visualisation. It provides with `Dev Tools` to run queries on your data and different graphs for visualisation.
 I used Pie Chart, Line Graph, Tag Cloud and Bar graphs to show the data on the dashboard.
 
@@ -178,7 +178,7 @@ A snapshot of the Pie Chart with buckets of video view count and sub-buckets of 
 
 ![pie-image](./pie-example.png)
 
-#### Data Training:
+### Data Training:
  
 For training, I have used a Linear Regression model over the collected data.
 The input features are:
