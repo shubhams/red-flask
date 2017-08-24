@@ -15,8 +15,8 @@ def search_video_meta():
     request_json = request.get_json(force=True)
     print request_json.get('q')
     try:
-        records_count = youtube_util.search_by_keyword(request_json)
-        return 'Inserted ' + str(records_count) + ' records'
+        response = youtube_util.search_by_keyword(request_json)
+        return response
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
         return 'Failure'

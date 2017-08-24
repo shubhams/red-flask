@@ -1,9 +1,10 @@
 import os
+
+import certifi
+import isodate
+from elasticsearch import Elasticsearch
 from flask import json
 from googleapiclient.discovery import build
-from elasticsearch import Elasticsearch
-from googleapiclient.errors import HttpError
-from oauth2client.tools import argparser
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -46,7 +47,7 @@ def search_by_keyword(options):
 def get_vides_by_ids(query, video_ids):
     video_response = youtube.videos().list(
         id=video_ids,
-        part='snippet, contentDetails, status, statistics, topicDetails, liveStreamingDetails'
+        part='snippet, contentDetails, status, statistics, topicDetails, liveStreamingDetails, recordingDetails'
     ).execute()
 
     return insert_into_es(query, video_response)
@@ -58,11 +59,28 @@ def insert_into_es(query, video_response):
     with open(es_cred_file) as cred_file:
         es_creds = json.load(cred_file)
 
-    es = Elasticsearch(http_auth=(es_creds.get('user'), es_creds.get('secret')))
-    for video_meta in video_response.get("items", []):
-        video_meta['query'] = query
-        print json.dumps(video_meta)
-        es.index(index='video', doc_type='meta', body=(
-            video_meta
-        ))
-    return len(video_response.get("items", []))
+    try:
+        # es = Elasticsearch(http_auth=(es_creds.get('user'), es_creds.get('secret')))
+        es = Elasticsearch(
+            ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
+            http_auth=(es_creds.get('user'), es_creds.get('secret')),
+            port=9243,
+            use_ssl=True,
+            verify_certs=True,
+            ca_certs=certifi.where(),
+        )
+        print "Connected", es.info()
+
+        for video_meta in video_response.get("items", []):
+            video_meta['query'] = query
+            video_meta['contentDetails']['duration'] = int(isodate.parse_duration(video_meta['contentDetails']['duration'])
+                                                           .total_seconds())
+            print json.dumps(video_meta)
+            es.index(index='video', doc_type='meta', body=(
+                video_meta
+            ))
+        return 'Inserted ' + str(len(video_response.get("items", []))) + ' records'
+
+    except Exception as ex:
+        print "Error:", ex
+        return 'Error inserting records into ES'
