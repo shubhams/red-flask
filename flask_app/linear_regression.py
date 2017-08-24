@@ -12,6 +12,7 @@ class LinearRegression(object):
         self.save_model()
 
     def test(self, data):
+        print 'input data', data
         return self.reg.predict([data])
 
     def save_model(self):

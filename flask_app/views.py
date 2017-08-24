@@ -1,4 +1,4 @@
-import urlparse
+import urlparse, numpy as np
 import os
 import es_util
 import youtube_util
@@ -14,6 +14,12 @@ model_path = os.path.dirname(os.path.abspath(__file__)) + '/../creds/model'
 reg_helper = RegressionHelper(es)
 linear_reg = LinearRegression(model_path)
 
+if not os.path.isfile(model_path):
+    reg_helper.get_videos_data()
+    data, output = reg_helper.get_data()
+    linear_reg.train(data, output)
+else:
+    linear_reg.load_model()
 
 @app.route('/')
 def index():
@@ -47,22 +53,28 @@ def search_video_meta():
 
 @app.route('/search_url', methods=['POST'])
 def search_url():
-    url = request.form['url']
-    url_data = urlparse.urlparse(url)
-    query = urlparse.parse_qs(url_data.query)
-    video_id = query["v"][0]
-    print video_id
     output = {}
-    output['status'] = True
-    output['num_views'] = 0
-    output['num_comments'] = 0
-    output['num_dislikes'] = 0
-    output['num_favourites'] = 0
-    output['num_channel_videos'] = 0
-    output['num_channel_subscribers'] = 0
-    output['actual_likes'] = 0
-    output['predicted_likes'] = 0
+    try:
+        url = request.form['url']
+        print url
+        url_data = urlparse.urlparse(url)
+        query = urlparse.parse_qs(url_data.query)
+        video_id = query["v"][0]
+        print video_id
+        result = youtube_util.get_video_by_id(video_id)
+        # print 'result->input: ',np.array(result['input'], dtype=np.int64)
 
+        output['status'] = True
+        output['num_views'] = result['input']['num_views']
+        output['num_comments'] = result['input']['num_comments']
+        output['num_dislikes'] = result['input']['num_dislikes']
+        output['num_favourites'] = result['input']['num_favourites']
+        output['num_channel_videos'] = result['input']['num_channel_videos']
+        output['num_channel_subscribers'] = result['input']['num_channel_subscribers']
+        output['actual_likes'] = result['output']['actual_likes']
+        output['predicted_likes'] = int(linear_reg.test(np.array(result['input'].values(), dtype=np.int64))[0][0])
+    except Exception as e:
+        output['status'] = False
     return jsonify(output)
 
 

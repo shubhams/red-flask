@@ -15,6 +15,7 @@ $('.search_url').on('click', function(){
 			$('.error_div').show()
 		},
 		success: function(data) {
+		    console.log(data)
 			$('.processing_div').hide();
 			if (data['status'] == true){
 			    $('#num_views').html(data['num_views'])
