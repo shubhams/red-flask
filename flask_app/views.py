@@ -1,7 +1,6 @@
+import youtube_util
 from flask import request
 from flask_app import app
-
-import youtube_util
 from googleapiclient.errors import HttpError
 
 

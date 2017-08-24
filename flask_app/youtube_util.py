@@ -60,15 +60,15 @@ def insert_into_es(query, video_response):
         es_creds = json.load(cred_file)
 
     try:
-        # es = Elasticsearch(http_auth=(es_creds.get('user'), es_creds.get('secret')))
-        es = Elasticsearch(
-            ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
-            http_auth=(es_creds.get('user'), es_creds.get('secret')),
-            port=9243,
-            use_ssl=True,
-            verify_certs=True,
-            ca_certs=certifi.where(),
-        )
+        es = Elasticsearch(http_auth=(es_creds.get('user'), es_creds.get('secret')))
+        # es = Elasticsearch(
+        #     ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
+        #     http_auth=(es_creds.get('user'), es_creds.get('secret')),
+        #     port=9243,
+        #     use_ssl=True,
+        #     verify_certs=True,
+        #     ca_certs=certifi.where(),
+        # )
         print "Connected", es.info()
 
         for video_meta in video_response.get("items", []):

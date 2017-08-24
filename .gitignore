@@ -292,6 +292,6 @@ ENV/
 /site
 
 #secrets
-flask_app/creds/
+creds/
 
 # End of https://www.gitignore.io/api/macos,python,pycharm+all
