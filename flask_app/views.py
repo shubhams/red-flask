@@ -14,12 +14,8 @@ model_path = os.path.dirname(os.path.abspath(__file__)) + '/../creds/model'
 reg_helper = RegressionHelper(es)
 linear_reg = LinearRegression(model_path)
 
-# if not os.path.isfile(model_path):
-#     reg_helper.get_videos_data()
-#     data, output = reg_helper.get_data()
-#     linear_reg.train(data, output)
-# else:
-#     linear_reg.load_model()
+if os.path.isfile(model_path):
+    linear_reg.load_model()
 
 @app.route('/')
 def index():
