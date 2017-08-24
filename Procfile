@@ -1,1 +1,2 @@
-web: gunicorn /app/.heroku/python/bin/python/flask run
+web: gunicorn flask_app:app --log-file -
+
