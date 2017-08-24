@@ -1,8 +1,6 @@
 import os
 
-import certifi
 import isodate
-from elasticsearch import Elasticsearch
 from flask import json
 from googleapiclient.discovery import build
 
@@ -22,7 +20,7 @@ youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
                 developerKey=DEVELOPER_KEY)
 
 
-def search_by_keyword(options):
+def search_by_keyword(es, options):
     # Call the search.list method to retrieve results matching the specified
     # query term.
     query = options.get('q')
@@ -42,41 +40,26 @@ def search_by_keyword(options):
             videos_list_ids.append(search_result["id"]["videoId"])
 
     print "Video IDs retreived:\n", "\n".join(videos_list_ids), "\n"
-    return get_vides_by_ids(query, video_ids=",".join(videos_list_ids))
+    return get_vides_by_ids(es, query, video_ids=",".join(videos_list_ids))
 
 
-def get_vides_by_ids(query, video_ids):
+def get_vides_by_ids(es, query, video_ids):
     video_response = youtube.videos().list(
         id=video_ids,
         part='snippet, contentDetails, status, statistics, topicDetails, liveStreamingDetails, recordingDetails'
     ).execute()
 
-    return insert_into_es(query, video_response)
+    return insert_into_es(es, query, video_response)
 
 
-def insert_into_es(query, video_response):
-    # es_cred_file = os.path.join(dir_path, 'creds/es_creds.json')
-
-    # with open(es_cred_file) as cred_file:
-    #     es_creds = json.load(cred_file)
+def insert_into_es(es, query, video_response):
 
     try:
-        # es = Elasticsearch(http_auth=(es_creds.get('user'), es_creds.get('secret')))
-        es = Elasticsearch(
-            ['https://3d33da5b17c8ed0c90d3d831d3cccc9e.us-east-1.aws.found.io'],
-            # http_auth=(es_creds.get('user'), es_creds.get('secret')),
-            http_auth=(os.environ['ES_USER'], os.environ['ES_SECRET']),
-            port=9243,
-            use_ssl=True,
-            verify_certs=True,
-            ca_certs=certifi.where(),
-        )
-        print "Connected", es.info()
-
         for video_meta in video_response.get("items", []):
             video_meta['query'] = query
-            video_meta['contentDetails']['duration'] = int(isodate.parse_duration(video_meta['contentDetails']['duration'])
-                                                           .total_seconds())
+            video_meta['contentDetails']['duration'] = int(
+                isodate.parse_duration(video_meta['contentDetails']['duration'])
+                .total_seconds())
             print json.dumps(video_meta)
             es.index(index='video', doc_type='meta', body=(
                 video_meta
@@ -86,3 +69,12 @@ def insert_into_es(query, video_response):
     except Exception as ex:
         print "Error:", ex
         return 'Error inserting records into ES'
+
+
+def get_channel_info(es, channel_id):
+    channel_response = youtube.channels().list(
+        part='statistics',
+        id=channel_id
+    ).execute()
+
+    return channel_response
