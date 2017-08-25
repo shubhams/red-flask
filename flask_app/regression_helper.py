@@ -13,7 +13,7 @@ class RegressionHelper(object):
         data = r
 
         regresstion_data = []
-        actual_output= []
+        actual_output = []
         for item in data:
             input = np.array(item['input'].values(), dtype=np.int64)
             regresstion_data.append(input)
@@ -36,26 +36,28 @@ class RegressionHelper(object):
             response = []
             print es_response['hits']['total']
             for hits in es_response['hits']['hits']:
-                print hits['_id']
-                features = {}
-                actual_likes = {}
-                stats = {}
+                try:
+                    print hits['_id']
+                    features = {}
+                    actual_likes = {}
+                    stats = {}
 
-                features['num_views'] = hits['_source']['statistics']['viewCount']
-                features['num_comments'] = hits['_source']['statistics']['commentCount']
-                features['num_dislikes'] = hits['_source']['statistics']['dislikeCount']
-                features['num_favourites'] = hits['_source']['statistics']['favoriteCount']
-                features['num_channel_videos'] = hits['_source']['channel']['videoCount']
-                features['num_channel_subscribers'] = hits['_source']['channel']['subscriberCount']
+                    features['num_views'] = hits['_source']['statistics']['viewCount']
+                    features['num_comments'] = hits['_source']['statistics']['commentCount']
+                    features['num_dislikes'] = hits['_source']['statistics']['dislikeCount']
+                    features['num_favourites'] = hits['_source']['statistics']['favoriteCount']
+                    features['num_channel_videos'] = hits['_source']['channel']['videoCount']
+                    features['num_channel_subscribers'] = hits['_source']['channel']['subscriberCount']
 
-                actual_likes['actual_likes'] = hits['_source']['statistics']['likeCount']
+                    actual_likes['actual_likes'] = hits['_source']['statistics']['likeCount']
 
-                stats['input'] = features
-                print stats
-                stats['output'] = actual_likes
-                print stats
-                response.append(stats)
-                print response
+                    stats['input'] = features
+                    stats['output'] = actual_likes
+                    response.append(stats)
+                except Exception:
+                    print "Exception occured for document id:", hits['_id']
+                    pass
+            print len(response)
             return response
         except HttpError, e:
             print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
