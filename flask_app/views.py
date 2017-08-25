@@ -10,7 +10,7 @@ from regression_helper import RegressionHelper
 
 es = es_util.init()
 
-model_path = os.path.dirname(os.path.abspath(__file__)) + '/../creds/model'
+model_path = os.path.dirname(os.path.abspath(__file__)) + '/../model'
 reg_helper = RegressionHelper(es)
 linear_reg = LinearRegression(model_path)
 
