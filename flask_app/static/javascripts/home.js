@@ -5,7 +5,7 @@ $('.search_url').on('click', function(){
 
 	input_url = $('#url').val()
 	$.ajax({
-		url: 'http://localhost:5000/search_url',
+		url: 'https://blooming-escarpment-84898.herokuapp.com/search_url',
 		data: {
 			format: 'json',
 			url: input_url
