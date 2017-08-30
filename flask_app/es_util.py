@@ -27,7 +27,8 @@ def get_all_documents(es, source_fields):
         'query': {
             'match_all': {}
         },
-        "_source": source_fields
+        "_source": source_fields,
+        "size":500
     })
 
 
