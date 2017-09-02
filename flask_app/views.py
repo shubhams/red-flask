@@ -14,9 +14,6 @@ model_path = os.path.dirname(os.path.abspath(__file__)) + '/../model'
 reg_helper = RegressionHelper(es)
 linear_reg = LinearRegression(model_path)
 
-if os.path.isfile(model_path):
-    linear_reg.load_model()
-
 
 @app.route('/')
 def index():
@@ -78,7 +75,7 @@ def search_url():
         output['num_channel_videos'] = result['input']['num_channel_videos']
         output['num_channel_subscribers'] = result['input']['num_channel_subscribers']
         output['actual_likes'] = result['output']['actual_likes']
-        output['predicted_likes'] = int(linear_reg.test(np.array(result['input'].values(), dtype=np.int64))[0][0])
+        output['predicted_likes'] = np.math.fabs(int(linear_reg.test(np.array(result['input'].values(), dtype=np.int64))[0][0]))
     except Exception as e:
         output['status'] = False
     return jsonify(output)
