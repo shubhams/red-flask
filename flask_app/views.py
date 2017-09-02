@@ -17,8 +17,18 @@ linear_reg = LinearRegression(model_path)
 if os.path.isfile(model_path):
     linear_reg.load_model()
 
+
 @app.route('/')
 def index():
+    if not os.path.isfile(model_path):
+        reg_helper.get_videos_data()
+        data, output = reg_helper.get_data()
+        print output
+        linear_reg.train(data, output)
+        print "NEW MODEL TRAINED"
+    else:
+        linear_reg.load_model()
+        print "EXISTING MODEL LOADED"
     return render_template('home.html')
 
 
