@@ -22,6 +22,7 @@ def index():
         data, output = reg_helper.get_data()
         print output
         linear_reg.train(data, output)
+        linear_reg.load_model()
         print "NEW MODEL TRAINED"
     else:
         linear_reg.load_model()
