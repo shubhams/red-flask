@@ -28,7 +28,7 @@ def get_all_documents(es, source_fields):
             'match_all': {}
         },
         "_source": source_fields,
-        "size":500
+        "size": 500
     })
 
 
@@ -39,3 +39,116 @@ def update_channel_info(es, doc_id, channel_stats):
         id=doc_id,
         body={"doc": channel_stats}
     )
+
+
+def get_aggregated_likes(es):
+    return es.search(index='video', body={
+        "size": 0,
+        "aggs": {
+            "likes_by_keyword": {
+                "terms": {
+                    "field": "query.keyword"
+                },
+                "aggs": {
+                    "average_likes": {
+                        "avg": {
+                            "field": "statistics.likeCount"
+                        }
+                    },
+                    "average_dislikes": {
+                        "avg": {
+                            "field": "statistics.dislikeCount"
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+
+def get_view_count_range(es):
+    return es.search(index='video', body={
+        "size": 0,
+        "aggs": {
+            "view_ranges": {
+                "range": {
+                    "field": "statistics.viewCount",
+                    "ranges": [
+                        {
+                            "to": 999
+                        },
+                        {
+                            "from": 1000,
+                            "to": 9999
+                        },
+                        {
+                            "from": 10000,
+                            "to": 49999
+                        },
+                        {
+                            "from": 49999,
+                            "to": 99999
+                        },
+                        {
+                            "from": 100000,
+                            "to": 199999
+                        },
+                        {
+                            "from": 200000,
+                            "to": 499999
+                        },
+                        {
+                            "from": 500000,
+                            "to": 999999
+                        },
+                        {
+                            "from": 1000000,
+                            "to": 9999999
+                        },
+                        {
+                            "from": 10000000
+                        }
+                    ]
+                },
+                "aggs": {
+                    "keyword_in_range": {
+                        "terms": {"field": "query.keyword"}
+                    }
+                }
+            }
+        }
+    })
+
+
+def get_popular_tags(es):
+    return es.search(index='video', body={
+        "size": 0,
+        "aggs": {
+            "doc_count": {
+                "terms": {
+                    "field": "query.keyword"
+                },
+                "aggs": {
+                    "tag_count": {
+                        "terms": {
+                            "field": "snippet.tags.keyword"
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+
+def get_date_histogram_data(es):
+    return es.search(index='video', body={
+        "size": 0,
+        "aggs": {
+            "videos_publish_interval": {
+                "date_histogram": {
+                    "field": "snippet.publishedAt",
+                    "interval": "month"
+                }
+            }
+        }
+    })
