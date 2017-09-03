@@ -9,7 +9,6 @@ $('.bar_chart').ready(function () {
       $('.bar_processing_div').hide();
       try {
         var bucket_data = data['aggregations']['likes_by_keyword']['buckets'];
-        console.log(bucket_data);
 
         // set the dimensions of the canvas
         var margin = {top: 20, right: 20, bottom: 70, left: 40},
@@ -42,7 +41,6 @@ $('.bar_chart').ready(function () {
         bucket_data.forEach(function (d) {
           d.avg_likes = +d["average_likes"]["value"];
           d.avg_dislikes = +d["average_dislikes"]["value"];
-          console.log(d);
         });
 
         // scale the range of the data
@@ -114,7 +112,6 @@ $('.pie_chart').ready(function () {
       $('.pie_processing_div').hide();
       try {
         var bucket_data = data['aggregations']['view_ranges']['buckets'];
-        console.log(bucket_data);
 
         var w = 400;
         var h = 300;
@@ -226,7 +223,6 @@ $('.word_cloud').ready(function () {
       $('.cloud_processing_div').hide();
       try {
         var bucket_data = data['aggregations']['doc_count']['buckets'];
-        console.log(bucket_data);
 
         var word_count = {};
 
@@ -241,7 +237,6 @@ $('.word_cloud').ready(function () {
         var fill = d3.scale.category20();
 
         var word_entries = d3.entries(word_count);
-        console.log(word_entries);
 
         var xScale = d3.scale.linear()
         .domain([0, d3.max(word_entries, function (d) {
@@ -300,6 +295,111 @@ $('.word_cloud').ready(function () {
         console.error(exception);
         $('.cloud_data_div').hide();
         $('.cloud_error_div').show();
+      }
+    },
+    type: 'GET'
+  });
+
+});
+
+$('.histogram').ready(function () {
+
+  $.ajax({
+    url: '/publish_dates',
+    error: function () {
+      $('.histogram_processing_div').hide();
+      $('.histogram_error_div').show()
+    },
+    success: function (data) {
+      $('.histogram_processing_div').hide();
+      try {
+        var bucket_data = data['aggregations']['videos_publish_interval']['buckets'];
+        console.log(bucket_data);
+
+        // set the dimensions of the canvas
+        var margin = {top: 20, right: 20, bottom: 70, left: 40},
+            width = 600 - margin.left - margin.right,
+            height = 300 - margin.top - margin.bottom;
+
+// set the ranges
+        var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+        var y = d3.scale.linear().range([height, 0]);
+
+// define the axis
+        var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(10);
+
+// add the SVG element
+        var svg = d3.select(".histogram_data_div").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+        bucket_data.forEach(function (d) {
+          d.count = +d["doc_count"];
+        });
+
+        // scale the range of the data
+        x.domain(bucket_data.map(function (d) {
+          return d.key_as_string;
+        }));
+        y.domain([0, d3.max(bucket_data, function (d) {
+          return d.count;
+        })]);
+
+        // add axis
+        svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", "-.55em")
+        .attr("transform", "rotate(-90)");
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 5)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end");
+
+        // Add bar chart
+        svg.selectAll(".histogram_data_div")
+        .data(bucket_data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
+          return x(d.key_as_string);
+        })
+        .attr("width", x.rangeBand())
+        .attr("y", function (d) {
+          return y(d.count);
+        })
+        .attr("height", function (d) {
+          return height - y(d.count);
+        });
+
+
+        $('.histogram_data_div').show();
+      }
+      catch
+          (exception) {
+        console.error(exception);
+        $('.histogram_data_div').hide();
+        $('.histogram_error_div').show();
       }
     },
     type: 'GET'

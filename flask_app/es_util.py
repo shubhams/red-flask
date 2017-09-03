@@ -150,7 +150,8 @@ def get_date_histogram_data(es):
             "videos_publish_interval": {
                 "date_histogram": {
                     "field": "snippet.publishedAt",
-                    "interval": "month"
+                    "interval": "quarter",
+                    "format" : "yyyy-MM-dd"
                 }
             }
         }
