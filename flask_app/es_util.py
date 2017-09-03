@@ -104,17 +104,17 @@ def get_view_count_range(es):
                             "to": 499999
                         },
                         {
-                            "key":"500k-1m",
+                            "key":"500k-1M",
                             "from": 500000,
                             "to": 999999
                         },
                         {
-                            "key":"1m-10m",
+                            "key":"1M-10M",
                             "from": 1000000,
                             "to": 9999999
                         },
                         {
-                            "key":">10m",
+                            "key":">10M",
                             "from": 10000000
                         }
                     ]
@@ -135,14 +135,8 @@ def get_popular_tags(es):
         "aggs": {
             "doc_count": {
                 "terms": {
-                    "field": "query.keyword"
-                },
-                "aggs": {
-                    "tag_count": {
-                        "terms": {
-                            "field": "snippet.tags.keyword"
-                        }
-                    }
+                    "field": "snippet.tags.keyword",
+                    "size":100
                 }
             }
         }
