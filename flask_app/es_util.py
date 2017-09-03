@@ -75,37 +75,46 @@ def get_view_count_range(es):
                     "field": "statistics.viewCount",
                     "ranges": [
                         {
+                            "key":"<999",
                             "to": 999
                         },
                         {
+                            "key":"1k-10k",
                             "from": 1000,
                             "to": 9999
                         },
                         {
+                            "key":"10k-50k",
                             "from": 10000,
                             "to": 49999
                         },
                         {
+                            "key":"50k-100k",
                             "from": 49999,
                             "to": 99999
                         },
                         {
+                            "key":"100k-200k",
                             "from": 100000,
                             "to": 199999
                         },
                         {
+                            "key":"200k-500k",
                             "from": 200000,
                             "to": 499999
                         },
                         {
+                            "key":"500k-1m",
                             "from": 500000,
                             "to": 999999
                         },
                         {
+                            "key":"1m-10m",
                             "from": 1000000,
                             "to": 9999999
                         },
                         {
+                            "key":">10m",
                             "from": 10000000
                         }
                     ]

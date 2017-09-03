@@ -45,15 +45,45 @@
         </div>
 
         <div class="ui bar_data_div">
-
         </div>
 
       </div>
 
     </div>
     <div class="column">
-      <div class="ui medium header" style="margin-left: 2%; margin-top: 2%;">Medium Header</div>
-      <p></p>
+      <div class="ui medium header" style="margin-left: 2%; margin-top: 2%;">View Count Pie</div>
+
+      <div class="ui segment pie_chart" style="margin: 1%">
+
+        <!--loader-div-->
+        <div class="pie_processing_div">
+          <div class="ui icon message">
+            <i class="notched circle loading icon"></i>
+            <div class="content">
+              <div class="header">
+                Hold on
+              </div>
+              <p>Crunching data for you...</p>
+            </div>
+          </div>
+        </div>
+
+        <!--error-div-->
+        <div class="pie_error_div"
+             style="display: none;">
+          <div class="ui negative message">
+            <div class="header">
+              We're sorry
+            </div>
+            <p>Couldn't get data</p>
+          </div>
+        </div>
+
+        <div class="ui pie_data_div">
+        </div>
+
+      </div>
+
     </div>
   </div>
 </div>
