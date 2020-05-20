@@ -9,7 +9,7 @@ flask-restplus==0.10.1
 functools32==3.2.3.post2
 google-api-python-client==1.6.2
 gunicorn==19.7.1
-httplib2==0.10.3
+httplib2==0.18.0
 idna==2.6
 isodate==0.5.4
 itsdangerous==0.24
