@@ -13,7 +13,7 @@ httplib2==0.10.3
 idna==2.6
 isodate==0.5.4
 itsdangerous==0.24
-Jinja2==2.9.6
+Jinja2==2.11.3
 jsonschema==2.6.0
 MarkupSafe==1.0
 numpy==1.13.1
